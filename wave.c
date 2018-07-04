@@ -214,12 +214,19 @@ static void closeFile(waveFile file) {
  */
 waveFile openInputWaveFile(char* fileName, int* sampleRate, int* numChannels) {
   waveFile file;
-  FILE* soundFile = fopen(fileName, "rb");
+  FILE* soundFile;
 
-  if (soundFile == NULL) {
-    fprintf(stderr, "Unable to open wave file %s for reading\n", fileName);
-    return NULL;
+  char* check = "_";
+  if (strcmp(fileName, check) == 0) {
+    soundFile = stdin;
+  } else {
+    soundFile = fopen(fileName, "rb");
+    if (soundFile == NULL) {
+      fprintf(stderr, "Unable to open wave file %s for reading\n", fileName);
+      return NULL;
+    }
   }
+
   file = (waveFile)calloc(1, sizeof(struct waveFileStruct));
   file->soundFile = soundFile;
   file->isInput = 1;
