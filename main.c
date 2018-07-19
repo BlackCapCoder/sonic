@@ -25,6 +25,7 @@ static void runSonic(char* inFileName, char* outFileName, float speed,
   int sampleRate, numChannels, samplesRead, samplesWritten;
 
   inFile = openInputWaveFile(inFileName, &sampleRate, &numChannels);
+
   if (inFile == NULL) {
     fprintf(stderr, "Unable to read wave file %s\n", inFileName);
     exit(1);
@@ -122,19 +123,19 @@ int main(int argc, char** argv) {
   while (xArg < argc && *(argv[xArg]) == '-') {
     if (!strcmp(argv[xArg], "-c")) {
       emulateChordPitch = 1;
-      printf("Scaling pitch linearly.\n");
+      /* printf("Scaling pitch linearly.\n"); */
     } else if (!strcmp(argv[xArg], "-n")) {
       enableNonlinearSpeedup = 1;
-      printf("Enabling nonlinear speedup.\n");
+      /* printf("Enabling nonlinear speedup.\n"); */
     } else if (!strcmp(argv[xArg], "-p")) {
       xArg++;
       if (xArg < argc) {
         pitch = atof(argv[xArg]);
-        printf("Setting pitch to %0.2fX\n", pitch);
+        /* printf("Setting pitch to %0.2fX\n", pitch); */
       }
     } else if (!strcmp(argv[xArg], "-q")) {
       quality = 1;
-      printf("Disabling speed-up heuristics\n");
+      /* printf("Disabling speed-up heuristics\n"); */
     } else if (!strcmp(argv[xArg], "-r")) {
       xArg++;
       if (xArg < argc) {
@@ -142,13 +143,13 @@ int main(int argc, char** argv) {
         if (rate == 0.0f) {
           usage();
         }
-        printf("Setting rate to %0.2fX\n", rate);
+        /* printf("Setting rate to %0.2fX\n", rate); */
       }
     } else if (!strcmp(argv[xArg], "-s")) {
       xArg++;
       if (xArg < argc) {
         speed = atof(argv[xArg]);
-        printf("Setting speed to %0.2fX\n", speed);
+        /* printf("Setting speed to %0.2fX\n", speed); */
       }
 #ifdef SONIC_SPECTROGRAM
     } else if (!strcmp(argv[xArg], "-S")) {
