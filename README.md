@@ -20,7 +20,7 @@ youtube-dl -f bestvideo "$1" --quiet -o - \
   | ffmpeg -i <( youtube-dl -f bestaudio "$1" --quiet -o - \
                | ffmpeg -loglevel panic -i - -f wav - \
                | sox -t wav - -t wav - \
-               | sonic -c -s 2.0 _ _
+               | sonic -c -s $SPEED _ _
                ) -i - \
       -loglevel panic \
       -preset ultrafast \
