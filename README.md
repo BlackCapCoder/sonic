@@ -1,4 +1,4 @@
-Added ability to read input from STDIN using underscore.
+Added ability to read input from STDIN / write output to STDOUT using underscore.
 
 
 Downloading, speeding up, and playing audio from youtube in mpv can be done in a single pipeline like so:
