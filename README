@@ -1,3 +1,0 @@
-Added ability to read input from STDIN by using underscore. Downloading and speeding up audio from youtube can be done in a single pipeline like so:
-
-youtube-dl -f bestaudio "$1" -o - | ffmpeg -i - -f wav -vn - | lame --decode - - | sonic -s 2.0 _ "/tmp/fast.wav"
