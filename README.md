@@ -22,7 +22,7 @@ video=$(echo "$urls" | sed '2q;d')
 
 ffmpeg -loglevel panic -i "$audio" -f wav - \
   | sox -t wav - -t wav - \
-  | ~/vid/sonic -c -s $SPEED _ _ \
+  | sonic -c -s $SPEED _ _ \
   | ffmpeg -i - \
            -i "$video" \
            -loglevel panic \
