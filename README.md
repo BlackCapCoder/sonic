@@ -23,10 +23,10 @@ youtube-dl -f bestvideo "$1" --quiet -o - \
                | sonic -c -s $SPEED _ _
                ) -i - \
       -loglevel panic \
-      -preset ultrafast \
       -filter_complex "[1:v]setpts=$(lua -e "print(1/$SPEED)")*PTS[v];[0:a]atempo=1.0[a]" \
       -map "[v]" -map "[a]" \
-      -f mpeg - \
+      -c:v libx264 -crf 18 -preset ultrafast \
+      -f avi - \
   | cvlc -
 ```
 
