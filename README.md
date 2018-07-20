@@ -12,22 +12,25 @@ youtube-dl -f bestaudio "$1" --quiet -o - \
   | mpv -
 ```
 
-Downloading, speeding up, and playing a video from youtube in vlc can be done like so:
+Downloading, speeding up, and playing a video from youtube in mpv can be done like so:
 ```bash
 SPEED="2.5"
 
-youtube-dl -f bestvideo "$1" --quiet -o - \
-  | ffmpeg -i <( youtube-dl -f bestaudio "$1" --quiet -o - \
-               | ffmpeg -loglevel panic -i - -f wav - \
-               | sox -t wav - -t wav - \
-               | sonic -c -s $SPEED _ _
-               ) -i - \
-      -loglevel panic \
-      -filter_complex "[1:v]setpts=$(lua -e "print(1/$SPEED)")*PTS[v];[0:a]atempo=1.0[a]" \
-      -map "[v]" -map "[a]" \
-      -c:v libx264 -crf 18 -preset ultrafast \
-      -f avi - \
-  | cvlc -
+urls=$(youtube-dl -f 'bestaudio,bestvideo[ext=mp4]/bestvideo[height<=1800]/bestvideo' "$1" --quiet --get-url)
+audio=$(echo "$urls" | sed '1q;d')
+video=$(echo "$urls" | sed '2q;d')
+
+ffmpeg -loglevel panic -i "$audio" -f wav - \
+  | sox -t wav - -t wav - \
+  | ~/vid/sonic -c -s $SPEED _ _ \
+  | ffmpeg -i - \
+           -i "$video" \
+           -loglevel panic \
+           -filter:v "setpts=$(lua -e "print(1/$SPEED)")*PTS" \
+           -vsync vfr -r 60 \
+           -c:v libx264 -crf 22 -preset ultrafast -tune zerolatency \
+           -f avi - \
+  | mpv --cache-secs 60 -
 ```
 
 The reason I pipe the output of ffmpeg to sox is that:
