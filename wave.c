@@ -221,12 +221,12 @@ waveFile openInputWaveFile(char* fileName, int* sampleRate, int* numChannels) {
     soundFile = stdin;
   } else {
     soundFile = fopen(fileName, "rb");
-    if (soundFile == NULL) {
-      fprintf(stderr, "Unable to open wave file %s for reading\n", fileName);
-      return NULL;
-    }
   }
 
+  if (soundFile == NULL) {
+    fprintf(stderr, "Unable to open wave file %s for reading\n", fileName);
+    return NULL;
+  }
   file = (waveFile)calloc(1, sizeof(struct waveFileStruct));
   file->soundFile = soundFile;
   file->isInput = 1;
@@ -243,7 +243,14 @@ waveFile openInputWaveFile(char* fileName, int* sampleRate, int* numChannels) {
  */
 waveFile openOutputWaveFile(char* fileName, int sampleRate, int numChannels) {
   waveFile file;
-  FILE* soundFile = fopen(fileName, "wb");
+  FILE* soundFile;
+
+  char* check = "_";
+  if (strcmp(fileName, check) == 0) {
+    soundFile = stdout;
+  } else {
+    soundFile = fopen(fileName, "wb");
+  }
 
   if (soundFile == NULL) {
     fprintf(stderr, "Unable to open wave file %s for writing\n", fileName);
